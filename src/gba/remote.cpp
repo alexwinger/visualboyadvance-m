@@ -3612,13 +3612,17 @@ void remoteSendStatus()
     s += 12;
     CPUUpdateCPSR();
     v = reg[16].I;
-    sprintf(s, "10:%02x%02x%02x%02x;", (v & 255),
+    sprintf(s, "19:%02x%02x%02x%02x;", (v & 255),
         (v >> 8) & 255,
         (v >> 16) & 255,
         (v >> 24) & 255);
-    s += 12;
+    s+=12;
+    /*for (int i = 17; i < 18; i++) {
+        sprintf(s, "%02x:00000000;", i);
+        s += 12;
+    }*/
     *s = 0;
-    //log("Sending %s\n", buffer);
+    log("remoteSendStatus@Sending %s\n", buffer);
     remotePutPacket(buffer);
 }
 
@@ -3700,7 +3704,7 @@ void remoteMemoryRead(char* p)
 void remoteQuery(char* p)
 {
     if (!strncmp(p, "fThreadInfo", 11)) {
-        remotePutPacket("m-1");
+        remotePutPacket("m0");
     } else if (!strncmp(p, "sThreadInfo", 11)) {
         remotePutPacket("l");
     } else if (!strncmp(p, "Supported", 9)) {
@@ -4156,6 +4160,9 @@ void remoteStubMain()
                             break;
                         case 'q':
                             remoteQuery(p);
+                            break;
+                        case 'v':
+                            remotePutPacket("");
                             break;
                         case 'Z':
                             type = *p++;
