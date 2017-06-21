@@ -3700,7 +3700,7 @@ void remoteMemoryRead(char* p)
 void remoteQuery(char* p)
 {
     if (!strncmp(p, "fThreadInfo", 11)) {
-        remotePutPacket("m-1");
+        remotePutPacket("m0");
     } else if (!strncmp(p, "sThreadInfo", 11)) {
         remotePutPacket("l");
     } else if (!strncmp(p, "Supported", 9)) {
@@ -4156,6 +4156,9 @@ void remoteStubMain()
                             break;
                         case 'q':
                             remoteQuery(p);
+                            break;
+                        case 'v':
+                            remotePutPacket("");
                             break;
                         case 'Z':
                             type = *p++;
